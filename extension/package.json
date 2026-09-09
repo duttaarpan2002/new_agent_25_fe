@@ -1,0 +1,77 @@
+{
+  "name": "ai-code-review-agent",
+  "displayName": "AI Code Review Agent (Pre-Push Gatekeeper)",
+  "description": "Pre-push AI code review inside VS Code with grounded feedback and push-readiness gatekeeping.",
+  "version": "1.0.0",
+  "publisher": "enterprise-ai",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ai-code-review.reviewBeforePush",
+        "title": "AI Code Review: Review Before Push",
+        "category": "AI Code Review",
+        "icon": "$(shield)"
+      },
+      {
+        "command": "ai-code-review.clearDiagnostics",
+        "title": "AI Code Review: Clear Review Issues",
+        "category": "AI Code Review"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ai-code-review-explorer",
+          "title": "AI Code Review",
+          "icon": "$(shield)"
+        }
+      ]
+    },
+    "views": {
+      "ai-code-review-explorer": [
+        {
+          "type": "webview",
+          "id": "aiCodeReview.reviewView",
+          "name": "Pre-Push Review Gate"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "AI Code Review",
+      "properties": {
+        "aiCodeReview.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:5000",
+          "description": "Backend API endpoint for AI Code Review Agent"
+        },
+        "aiCodeReview.strictGatekeeper": {
+          "type": "boolean",
+          "default": true,
+          "description": "Block git push if review returns DO_NOT_PUSH"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.2.2"
+  }
+}
